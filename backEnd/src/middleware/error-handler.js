@@ -3,8 +3,7 @@ import { StatusCodes } from "http-status-codes";
 export const errorHandler = (err, req, res, next) => {
   let customError = {
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
-    // Only errors we throw on purpose carry a statusCode. Anything else (a bug,
-    // a database error) is logged here and its details stay on the server.
+   
     msg: err.statusCode ? err.message : "Something went wrong try again later",
   };
 

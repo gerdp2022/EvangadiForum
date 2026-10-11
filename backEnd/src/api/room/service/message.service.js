@@ -1,7 +1,4 @@
-// Room messages: read the latest 50, post one.
-//
-// Order uses message_id, never created_at: two messages can share one second,
-// but never one id.
+
 
 import { safeExecute } from "../../../../schema/db.config.js";
 

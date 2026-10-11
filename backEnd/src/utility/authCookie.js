@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 
-// Settings for the login cookie. Login, logout and profile updates all use
-// these, so the cookie is always created and cleared the same way.
+
 
 export const AUTH_COOKIE_NAME = "token";
 

@@ -20,18 +20,7 @@ const textModel = genAI.getGenerativeModel(
   { timeout: GEMINI_TEXT_TIMEOUT_MS },
 );
 
-// ---------------------------------------------------------------------------
-// JSON parsing
-// ---------------------------------------------------------------------------
 
-// Gemini sometimes adds junk at the end of its JSON. Seen with real replies:
-//   {"answer":"..."}}      {"answer":"..."-syntax}      {"answer":"..."(-0)}
-// The answer text is complete and good. Only the end is broken.
-// This keeps everything up to the last complete value, closes the object and
-// parses that. Nothing is invented, and nothing is cut out of a value:
-// - the junk must be short and must not contain a quote. A quote means the
-//   problem is inside the text, and cutting there would show half an answer.
-// - if the result is still not valid JSON, it returns null.
 const MAX_JUNK_CHARS = 40;
 
 const asObject = (v) =>
@@ -74,8 +63,7 @@ function parseWithoutTrailingJunk(text) {
   }
 }
 
-// Strip an optional markdown fence and parse a JSON object. Returns null if
-// the text is not a usable JSON object.
+
 function parseJsonObject(raw) {
   if (!raw || typeof raw !== "string") return null;
   let t = raw.trim();
@@ -97,15 +85,7 @@ function parseJsonObject(raw) {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Calling Gemini
-// ---------------------------------------------------------------------------
 
-// Ask Gemini in JSON mode and return the PARSED object (or null if the last
-// try was still not usable JSON). Each reply is parsed exactly once.
-// Try again when Gemini is busy (429, 5xx), gives no reply (timeout,
-// network), or sends a reply that is not usable JSON. A wrong key or a bad
-// request (400, 401, 403) is not retried, because a retry cannot fix it.
 async function fetchGeminiJson(userPrompt) {
   for (let attempt = 1; ; attempt += 1) {
     try {
@@ -126,9 +106,7 @@ async function fetchGeminiJson(userPrompt) {
   }
 }
 
-// Shared shell for every AI feature: call Gemini, let `read` check the reply
-// (it throws if the reply is broken), and turn any failure into a 503 with a
-// friendly message. Nothing is ever invented for the user.
+
 async function askGemini({ label, unavailable, prompt, read }) {
   try {
     return read(await fetchGeminiJson(prompt));
@@ -138,7 +116,7 @@ async function askGemini({ label, unavailable, prompt, read }) {
   }
 }
 
-// Used by the RAG answer and the chat answer: both reply {"answer":"..."}.
+
 function readAnswer(parsed) {
   const answer = typeof parsed?.answer === "string" ? parsed.answer.trim() : "";
   if (!answer) throw new Error("Gemini reply has no answer");

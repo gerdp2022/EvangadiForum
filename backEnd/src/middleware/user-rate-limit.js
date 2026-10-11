@@ -22,17 +22,7 @@ export const createUserRateLimit = ({
   windowMs = 60 * 1000,
   what = "requests",
 }) => {
-  /*
-      Memory of recent requests, one entry per user.
-      Map: userId -> entry
-        key   = userId (req.user.id)
-        value = entry = { count, resetAt }
-          count   = how many requests this user sent in the current window
-          resetAt = time (ms) when the window ends and count starts again from 0
-      Example: 7 -> { count: 3, resetAt: 1790539200000 }
-      It is created once when the server starts and lives in server memory
-      (not in the database), so it is empty again after a restart.
-     */
+
   const requestCounts = new Map();
 
   return (req, res, next) => {

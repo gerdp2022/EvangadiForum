@@ -1,5 +1,4 @@
-// Discussion room request validation (express-validator). Every list ends
-// with validationErrorHandler from middleware/validation-handler.js.
+
 
 import { body } from "express-validator";
 import { param } from "express-validator";

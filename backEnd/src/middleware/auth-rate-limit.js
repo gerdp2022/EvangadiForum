@@ -1,18 +1,4 @@
-// Rate limit for login and register.
-//
-// Why: without it, anyone can try thousands of passwords against one account.
-//
-// The project's other limiter (user-rate-limit.js) counts per logged-in user.
-// Nobody is logged in yet when they call /login, so this one counts per IP
-// address instead.
-//
-// Like user-rate-limit.js, the counts live in server memory, so they reset
-// when the server restarts.
-//
-// Deploying behind a proxy (Render, Railway, Nginx...)? Add
-//   app.set("trust proxy", 1);
-// in index.js. Otherwise every visitor looks like the proxy's single IP and
-// they all share one limit.
+
 
 import { TooManyRequestsError } from "../utility/errors/errors.js";
 

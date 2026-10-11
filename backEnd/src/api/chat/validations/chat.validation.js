@@ -1,6 +1,3 @@
-// Chat request validation (express-validator). The list ends with
-// validationErrorHandler from middleware/validation-handler.js.
-
 import { body } from "express-validator";
 import { validationErrorHandler } from "../../../middleware/validation-handler.js";
 

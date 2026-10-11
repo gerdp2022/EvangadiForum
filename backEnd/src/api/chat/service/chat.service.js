@@ -1,30 +1,3 @@
-// The AI chat assistant. One message in, one reply out.
-//
-// It answers ONLY from our own data:
-//   - forum questions and their answers (everyone's)
-//   - the PDFs of the user who is asking (never another user's)
-//
-// Steps for one message:
-//   1. Small talk (hi, thanks, who are you...) gets a fixed reply. No AI call.
-//   2. Turn the message into a vector (Gemini embedding, RETRIEVAL_QUERY).
-//   3. Read the ready vectors from MySQL: every question, and the PDF chunks
-//      of THIS user only. Score each one with cosine similarity in Node.
-//   4. Keep the scores above the threshold, best first, at most MAX_SOURCES.
-//      Only when NOTHING is close enough: look for the message's keywords in
-//      every question and answer (plain SQL LIKE, no vectors). This is the
-//      safety net for words that only appear in an answer.
-//   5. Nothing close enough -> say "I do not know". No Gemini text call.
-//   6. Read the real text from MySQL: each matched question with ALL of its
-//      answers, and each matched PDF chunk. Answers are never searched.
-//   7. Ask Gemini to answer using only these numbered sources.
-//   8. Show only the sources the answer really cites as [n].
-//
-// The reply has a "kind":
-//   chat     -> small talk, with suggested next questions
-//   answer   -> answered, with sources
-//   related  -> not answered, but these threads are close
-//   notfound -> nothing in our data. The UI offers "Ask the community".
-
 import { safeExecute } from "../../../../schema/db.config.js";
 import { ServiceUnavailableError } from "../../../utility/errors/errors.js";
 import { generateQuestionEmbedding } from "../../question/service/vector.service.js";

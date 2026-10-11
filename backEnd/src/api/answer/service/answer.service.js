@@ -120,8 +120,7 @@ const getAnswersService = async ({ questionId, sortBy = "newest" }) => {
   };
 };
 
-// The author check lives in the WHERE clause, so an answer that does not
-// exist and an answer that belongs to someone else both report "not found".
+
 const updateAnswerService = async ({ answerId, userId, content }) => {
   const result = await safeExecute(
     "UPDATE answers SET content = ? WHERE answer_id = ? AND user_id = ?",

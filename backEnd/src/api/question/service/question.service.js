@@ -409,9 +409,7 @@ const updateQuestionService = async ({
     [title, content, contentChanged ? null : question.tag, question.id],
   );
 
-  // The embedding is built from the title and the content, so refresh it only
-  // when one of them changed. If Gemini fails, the edit is kept and the vector
-  // is marked failed, the same as on create.
+
   if (contentChanged) {
     const sourceText = normalizeQuestionText({ title, content });
     let embedding;

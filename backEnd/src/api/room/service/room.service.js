@@ -1,19 +1,9 @@
-// Discussion rooms: list them, read one.
-//
-// A room is returned in one shape everywhere (see toRoom below).
-// "isMember" is always about the user who is asking.
+
 
 import { safeExecute } from "../../../../schema/db.config.js";
 import { NotFoundError } from "../../../utility/errors/errors.js";
 
-// One SELECT for the list and for a single room. The first "?" is always the
-// id of the user who is asking (for is_member).
-// last_activity_at: the newest message, or the creation time of an empty room.
 
-// COALESCE: if there are no messages, use the room's creation time.
-// SELECT MAX(created_at) FROM room_messages WHERE room_id = r.room_id
-// is_member: does the user who is asking belong to this room?
-// EXISTS: true if the subquery returns at least one row, false if it returns none.
 
 const ROOM_SELECT = `
   SELECT

@@ -25,9 +25,6 @@ const formatProfile = (user) => ({
   avatar: user.avatar ?? null,
 });
 
-// The first bytes of a file show its real type, whatever its name or the
-// browser claims. Avatars are served from the API, so only real images are
-// accepted: a renamed HTML or script file is rejected here.
 export const detectImageType = (buffer) => {
   if (!buffer || buffer.length < 12) return null;
   if (buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) {
@@ -158,7 +155,13 @@ export const updateUserProfileService = async ({
     `UPDATE users
         SET first_name = ?, last_name = ?, bio = ?, avatar = ?
       WHERE user_id = ?`,
-    [trimmedFirstName, trimmedLastName, trimmedBio, nextAvatar, requestedUserId],
+    [
+      trimmedFirstName,
+      trimmedLastName,
+      trimmedBio,
+      nextAvatar,
+      requestedUserId,
+    ],
   );
 
   if (rows.affectedRows === 0) {
@@ -191,8 +194,6 @@ export const updateUserProfileService = async ({
   };
 };
 
-// Public, like the old /uploads/profiles files: an <img> tag cannot send a
-// login token. Returns null when the user has no stored photo.
 export const getAvatarImageService = async (userId) => {
   const rows = await safeExecute(
     `SELECT mime_type, image FROM user_avatars WHERE user_id = ? LIMIT 1`,

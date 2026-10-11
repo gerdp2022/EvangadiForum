@@ -18,9 +18,7 @@ const getTagEmbeddingTexts = () =>
 const initializeQuestionTagEmbeddings = async () => {
   if (tagEmbeddings) return tagEmbeddings;
   if (!tagEmbeddingsPromise) {
-    // Questions are stored as RETRIEVAL_DOCUMENT vectors, so the tags are
-    // embedded as RETRIEVAL_QUERY: Gemini is trained to match a query
-    // against documents, the same pairing semantic search uses.
+
     tagEmbeddingsPromise = generateEmbeddingsBatch(getTagEmbeddingTexts(), {
       taskType: "RETRIEVAL_QUERY",
     })

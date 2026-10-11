@@ -7,8 +7,7 @@ const GEMINI_EMBEDDING_MODEL =
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-// Both defaults come from real scores (npm run measure). A search is asked for,
-// so it can be looser. Related questions show up unasked, so they are stricter.
+
 const RECOMMEND_THRESHOLD = Number(process.env.RECOMMEND_THRESHOLD) || 0.62;
 const RELATED_THRESHOLD = Number(process.env.RELATED_THRESHOLD) || 0.75;
 const RECOMMEND_K = Number(process.env.RECOMMEND_K) || 5;
@@ -24,10 +23,7 @@ function normalizeWhitespace(value) {
 // Long pasted code adds noise, and the key part of a question is at the top.
 const MAX_EMBEDDING_CONTENT_CHARS = 2000;
 
-// Builds the text that is sent to the embedding model.
-// A question uses its title and content. A search query passes only `title`
-// and is returned as plain text. Case is kept: "useEffect" is a better signal
-// than "useeffect".
+
 function normalizeQuestionText({ title, content }) {
   const cleanTitle = normalizeWhitespace(`${title || ""}`.normalize("NFKC"));
   const cleanContent = normalizeWhitespace(

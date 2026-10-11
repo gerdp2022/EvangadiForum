@@ -1,14 +1,3 @@
-// RAG services. All database work and all Gemini work for PDF documents.
-//
-// Write your functions between your own markers and use "export const".
-// Imports: add them below, one per line. On a merge conflict in the imports,
-// keep BOTH lines.
-//
-// Project rules that matter here:
-// - Database: always use safeExecute from schema/db.config.js.
-// - Embeddings: always use generateQuestionEmbedding from
-//   question/service/vector.service.js. Do not call Gemini directly.
-// - Another user's document is reported as 404, never 403.
 
 import fs from "node:fs/promises";
 import path from "node:path";

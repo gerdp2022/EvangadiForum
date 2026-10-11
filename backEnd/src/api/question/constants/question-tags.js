@@ -1,9 +1,3 @@
-// name:        the tag saved on a question and used in ?tag= filters
-// description: short text for people (returned by GET /api/tags)
-// examples:    longer list of topics, only used to match questions to tags.
-//              Longer text gives a much better match than a few words: with
-//              only the short description, one or two tags win almost every
-//              question.
 export const QUESTION_TAGS = [
   {
     name: "html-css",
