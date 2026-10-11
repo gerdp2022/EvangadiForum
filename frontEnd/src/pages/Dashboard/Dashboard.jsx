@@ -31,11 +31,9 @@ export default function Dashboard() {
   const [activeSearch, setActiveSearch] = useState(null);
   const [note, setNote] = useState("");
 
-  // Every request takes a new id; a response is applied only if its id is
-  // still the latest, so a slow older search never overwrites a newer one.
+
   const requestIdRef = useRef(0);
-  // The search currently shown ("" = normal feed). Lets the debounced
-  // effect skip work that already ran (initial load, Enter, Clear).
+
   const lastSearchKeyRef = useRef("");
 
   const loadAllQuestions = useCallback(async () => {

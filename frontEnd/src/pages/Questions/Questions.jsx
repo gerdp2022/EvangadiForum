@@ -11,11 +11,9 @@ import btn from "../../styles/buttons.module.css";
 import ui from "../../styles/pageStates.module.css";
 
 export default function Questions() {
-  //We can say useSearchParams returns a two-item array, current params and a setter function.
-  // Here we only need to read, so we use the first item.
+
   const [searchParams] = useSearchParams();
-  // /questions?search=react
-  //Axios: GET /api/questions?search=react
+ 
   const search = searchParams.get("search") || "";
 
   const [questions, setQuestions] = useState([]);

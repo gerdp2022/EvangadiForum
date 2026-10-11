@@ -1,11 +1,7 @@
-/* Styles for Auth. Scoped to this component.
-   Colours are sampled from the supplied design mockups.
-   All sizing uses clamp() so the layout scales between breakpoints
-   instead of jumping. */
+
 
 .authPage {
-  /* One knob for the space between form fields. Keep this equal to the
-     bottom margin .formField gets in pageStates.module.css. */
+ 
   --auth-field-gap: 18px;
 
   min-height: 100vh;

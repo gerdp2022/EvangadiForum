@@ -16,8 +16,7 @@ import btn from "../../styles/buttons.module.css";
 import styles from "./Landing.module.css";
 import ui from "../../styles/pageStates.module.css";
 
-// Scroll-triggered reveal shared by every feature card. viewport.once keeps a
-// card visible after its first pass instead of re-animating on every scroll.
+
 const reveal = {
   initial: { opacity: 0, y: 18 },
   whileInView: { opacity: 1, y: 0 },

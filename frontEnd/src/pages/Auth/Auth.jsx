@@ -20,9 +20,7 @@ import avatar1 from "../../assets/avatar1.png";
 import avatar2 from "../../assets/avatar2.png";
 import avatar3 from "../../assets/avatar3.png";
 
-// How long the "Registration successful" banner stays up before the card
-// switches itself to the sign-in form. The task file asks for a short pause so
-// the user reads the confirmation instead of wondering why the form changed.
+
 const REGISTER_SUCCESS_DELAY_MS = 1500;
 
 export default function Auth() {
@@ -37,8 +35,7 @@ export default function Auth() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Where to go after signing in: the protected page the visitor was sent
-  // here from, or the dashboard.
+
   const redirectTo = location.state?.from?.pathname || "/dashboard";
 
   const [mode, setMode] = useState("login");
@@ -56,13 +53,12 @@ export default function Auth() {
   const [success, setSuccess] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  // Holds the pending "switch to sign-in" timer so it can be cancelled if the
-  // user toggles the form themselves or navigates away before it fires.
+
   const switchTimer = useRef(null);
 
   useEffect(() => () => clearTimeout(switchTimer.current), []);
 
-  // Wait for the session check, so a logged-in user doesn't see the form flash.
+
   if (isCheckingSession) {
     return null;
   }
@@ -79,7 +75,7 @@ export default function Auth() {
       [name]: value,
     }));
 
-    // Remove this field's validation error while user fixes it
+
     setErrors((current) => ({
       ...current,
       [name]: "",
@@ -175,8 +171,7 @@ export default function Auth() {
           password: form.password,
         });
 
-        // Register does not sign you in, so confirm it worked, then hand the
-        // user to the sign-in form with their email already filled in.
+
         setSuccess("Registration successful! Please log in.");
 
         setForm({

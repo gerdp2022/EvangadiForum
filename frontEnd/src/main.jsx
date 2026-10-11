@@ -5,8 +5,6 @@ import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
 import "./index.css";
 
-// One-time cleanup: login data now lives in an httpOnly cookie, so remove
-// what older versions of the app saved in localStorage.
 try {
   Object.keys(localStorage)
     .filter(
