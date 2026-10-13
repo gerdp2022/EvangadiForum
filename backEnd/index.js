@@ -19,10 +19,23 @@ const app = express();
 app.set("trust proxy", 2);
 
 // middleware
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+// app.use(cookieParser());
+// app.use(cors());
+
+// middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors());
+
+app.use(
+  cors({
+    origin: "https://evangadi-forum-frontend-35yt.onrender.com",
+    credentials: true,
+  }),
+);
+
 // Only profile photos are public. Users' PDFs (uploads/rag) are NOT served
 // here; they are only reachable through GET /api/rag/documents/:id/file,
 // which checks that the document belongs to the logged-in user.
