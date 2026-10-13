@@ -7,19 +7,19 @@ const close = (actual, expected) =>
   assert.ok(Math.abs(actual - expected) < 1e-9, `${actual} is not ${expected}`);
 
 describe("calculateCosineSimilarity", () => {
-  test("identical direction scores 1", () => {
+  test("should return 1 for vectors pointing in the same direction", () => {
     close(calculateCosineSimilarity([1, 2, 3], [2, 4, 6]), 1);
   });
 
-  test("unrelated (perpendicular) vectors score 0", () => {
+  test("should return 0 for perpendicular vectors", () => {
     close(calculateCosineSimilarity([1, 0], [0, 1]), 0);
   });
 
-  test("opposite vectors score -1", () => {
+  test("should return -1 for vectors pointing in opposite directions", () => {
     close(calculateCosineSimilarity([1, 1], [-1, -1]), -1);
   });
 
-  test("vectors of different sizes are an error", () => {
+  test("should throw when the two vectors have different lengths", () => {
     assert.throws(() => calculateCosineSimilarity([1, 2], [1, 2, 3]), /same length/);
   });
 });

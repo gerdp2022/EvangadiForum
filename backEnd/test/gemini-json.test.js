@@ -15,23 +15,23 @@ after(() => {
 });
 
 describe("parseJsonObject (reading Gemini's JSON replies)", () => {
-  test("parses a clean JSON object", () => {
+  test("should parse a reply that is a clean JSON object", () => {
     assert.deepEqual(parseJsonObject('{"level":"strong","note":"Good."}'), {
       level: "strong",
       note: "Good.",
     });
   });
 
-  test("removes a ```json code fence around the reply", () => {
+  test("should parse a reply wrapped in a ```json code fence", () => {
     const raw = '```json\n{"tips":["Add an example"]}\n```';
     assert.deepEqual(parseJsonObject(raw), { tips: ["Add an example"] });
   });
 
-  test("removes a plain ``` code fence too", () => {
+  test("should parse a reply wrapped in a plain ``` code fence", () => {
     assert.deepEqual(parseJsonObject('```\n{"a":1}\n```'), { a: 1 });
   });
 
-  test("repairs short junk after the JSON (seen in real Gemini replies)", () => {
+  test("should repair a reply when short junk follows the JSON, as seen in real Gemini replies", () => {
     assert.deepEqual(parseJsonObject('{"answer":"Use JWT."}}'), {
       answer: "Use JWT.",
     });
@@ -40,19 +40,19 @@ describe("parseJsonObject (reading Gemini's JSON replies)", () => {
     });
   });
 
-  test("braces inside a string value do not confuse the repair", () => {
+  test("should not be confused by braces inside a string value when repairing", () => {
     assert.deepEqual(parseJsonObject('{"answer":"if (x) { y(); }"}}'), {
       answer: "if (x) { y(); }",
     });
   });
 
-  test("refuses to cut a reply that broke in the middle of the text", () => {
+  test("should return null instead of cutting a reply that broke in the middle of the text", () => {
     // A quote in the junk means the text itself is broken; showing half an
     // answer would be worse than showing none.
     assert.equal(parseJsonObject('{"answer":"Use JWT.","note":"unfinish'), null);
   });
 
-  test("rejects plain text, arrays and empty input", () => {
+  test("should return null for plain text, arrays and empty input", () => {
     assert.equal(parseJsonObject("Sorry, I cannot help with that."), null);
     assert.equal(parseJsonObject("[1,2,3]"), null);
     assert.equal(parseJsonObject(""), null);

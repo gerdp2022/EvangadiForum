@@ -12,7 +12,7 @@ const fakeTagEmbeddings = QUESTION_TAGS.map((_, i) =>
 const indexOf = (name) => QUESTION_TAGS.findIndex((tag) => tag.name === name);
 
 describe("QUESTION_TAGS list", () => {
-  test("every tag has a unique name, a description and matching examples", () => {
+  test("should give every tag a unique name, a description and long enough examples", () => {
     const names = QUESTION_TAGS.map((tag) => tag.name);
     assert.equal(new Set(names).size, names.length, "duplicate tag name");
     for (const tag of QUESTION_TAGS) {
@@ -21,7 +21,7 @@ describe("QUESTION_TAGS list", () => {
     }
   });
 
-  test("the tags API shows only name and description", async () => {
+  test("should expose only the name and description of each tag through the tags API", async () => {
     const tags = await getTagsService();
     assert.equal(tags.length, QUESTION_TAGS.length);
     for (const tag of tags) {
@@ -31,26 +31,26 @@ describe("QUESTION_TAGS list", () => {
 });
 
 describe("selectQuestionTag", () => {
-  test("picks the tag whose embedding is closest to the question", () => {
+  test("should pick the tag whose embedding is closest to the question", () => {
     const question = fakeTagEmbeddings[indexOf("database")].map((v, i) =>
       i === indexOf("nodejs-express") ? 0.4 : v,
     );
     assert.equal(selectQuestionTag(question, fakeTagEmbeddings), "database");
   });
 
-  test("every tag can win (no tag is impossible to get)", () => {
+  test("should let every tag win for a matching question, so no tag is unreachable", () => {
     for (const tag of QUESTION_TAGS) {
       const question = fakeTagEmbeddings[indexOf(tag.name)];
       assert.equal(selectQuestionTag(question, fakeTagEmbeddings), tag.name);
     }
   });
 
-  test("rejects an invalid question embedding", () => {
+  test("should throw when the question embedding is empty or contains NaN", () => {
     assert.throws(() => selectQuestionTag([], fakeTagEmbeddings), /invalid/);
     assert.throws(() => selectQuestionTag([1, NaN], fakeTagEmbeddings), /invalid/);
   });
 
-  test("rejects an incomplete list of tag embeddings", () => {
+  test("should throw when the list of tag embeddings is incomplete", () => {
     assert.throws(
       () => selectQuestionTag([1, 0], fakeTagEmbeddings.slice(0, 3)),
       /incomplete/,

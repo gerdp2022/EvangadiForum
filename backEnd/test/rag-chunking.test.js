@@ -8,23 +8,23 @@ const words = (count) =>
   Array.from({ length: count }, (_, i) => `word${i}`).join(" ");
 
 describe("chunkTextWithOverlap", () => {
-  test("empty or blank text gives no chunks", () => {
+  test("should return no chunks when the text is empty or only whitespace", () => {
     assert.deepEqual(chunkTextWithOverlap(""), []);
     assert.deepEqual(chunkTextWithOverlap("   \n\t  "), []);
   });
 
-  test("short text becomes exactly one chunk", () => {
+  test("should return exactly one chunk when the text is short", () => {
     const chunks = chunkTextWithOverlap("Hello world, this is a short PDF.");
     assert.equal(chunks.length, 1);
     assert.equal(chunks[0].content, "Hello world, this is a short PDF.");
   });
 
-  test("extra spaces and tabs are cleaned", () => {
+  test("should collapse extra spaces and tabs into single spaces", () => {
     const chunks = chunkTextWithOverlap("  one   two\t\tthree  ");
     assert.equal(chunks[0].content, "one two three");
   });
 
-  test("long text is split into chunks of at most 1000 characters", () => {
+  test("should split long text into chunks of at most 1000 characters", () => {
     const chunks = chunkTextWithOverlap(words(1000)); // about 7,900 chars
     assert.ok(chunks.length > 1, "expected more than one chunk");
     for (const chunk of chunks) {
@@ -32,7 +32,7 @@ describe("chunkTextWithOverlap", () => {
     }
   });
 
-  test("neighbouring chunks overlap, so boundary sentences are not lost", () => {
+  test("should overlap neighbouring chunks so sentences on a boundary are not lost", () => {
     const chunks = chunkTextWithOverlap(words(1000));
     for (let i = 1; i < chunks.length; i += 1) {
       assert.ok(
@@ -42,7 +42,7 @@ describe("chunkTextWithOverlap", () => {
     }
   });
 
-  test("chunks start and end on whole words", () => {
+  test("should start and end every chunk on a whole word", () => {
     const chunks = chunkTextWithOverlap(words(1000));
     for (const chunk of chunks) {
       for (const piece of chunk.content.split(" ")) {
@@ -51,7 +51,7 @@ describe("chunkTextWithOverlap", () => {
     }
   });
 
-  test("every word of the text ends up in some chunk", () => {
+  test("should keep every word of the text in at least one chunk", () => {
     const text = words(1000);
     const seen = new Set(
       chunkTextWithOverlap(text).flatMap((chunk) => chunk.content.split(" ")),
@@ -61,7 +61,7 @@ describe("chunkTextWithOverlap", () => {
     }
   });
 
-  test("never makes more than 1000 chunks, even for a huge text", () => {
+  test("should never create more than 1000 chunks, even for a huge text", () => {
     const huge = "abcdefghi ".repeat(200_000); // 2,000,000 chars
     assert.equal(chunkTextWithOverlap(huge).length, 1000);
   });
